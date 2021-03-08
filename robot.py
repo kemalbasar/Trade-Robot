@@ -37,7 +37,7 @@ class RobotA:
         b.secret = self.secret_key
         return b
 
-
+    #pull historical prices from exchange data base before start trading.
     def grabhistory(self , period):
         pricedata = {}
         dictionaryoflistofopen = {}
