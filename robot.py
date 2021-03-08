@@ -88,7 +88,9 @@ class RobotA:
         result1 = result1.sort_index(axis=0,ascending = True)
         result1.set_axis(time, 'columns' , inplace = True)
         return result1
-
+    
+    
+    #Pulling prices  after the end of period.
     def addcandle(self,i,period):
 
         list = []
