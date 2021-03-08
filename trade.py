@@ -30,7 +30,8 @@ class Trade():
          if a[i]['total'] > 10 :
              self.balance = a[i]['total']
              break
-
+    
+    #Method which put order according to signals come from indicators.trend() and put stop loss.
     def execution(self,instrument: str, side: str):
 
         if side == 'buy' : a = 'bids'
@@ -76,7 +77,8 @@ class Trade():
             traded_pairs_short.append(instrument)
             available_pairs.remove(instrument)
         print(traded_pairs_long,traded_pairs_short,available_pairs)
-
+    
+    #Method which close the open positions according to strategy.
     def close_position(self,symbolclose: str,sideclose: str):
 
         price = self.agent.get_orderbook(symbolclose, 1)
@@ -110,6 +112,7 @@ class Trade():
             traded_pairs_long.remove(symbolclose)
             available_pairs.append(symbolclose)
 
+    #Method which checks orders fills or not periodicly.        
     def check_fills(self):
 
      for symbol in traded_pairs_short:
@@ -125,7 +128,8 @@ class Trade():
             traded_pairs_long.remove(symbol)
             available_pairs.append(symbol)
             print('long position of %s has just closed at %.2f' % (symbol, self.agent.get_fills[k]['price']))
-
+            
+    #Method which checks account hava any position befor session started.
     def check_positions(self):
         a = self.agent.get_positions()
         for i in range(len(a)):
