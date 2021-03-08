@@ -11,8 +11,8 @@ traded_pairs_short = []
 class Trade():
 
     def __init__(self):
-        self.api_key = 'QMP9IOD3oZ_nscanB1C9p7Shcj4hGdGHT44DfN-2'
-        self.secret_key = '-gGJhztTh9NedfuY8noTeYXnjEnMBo1HxICR4Ixk'
+        self.api_key = '****'
+        self.secret_key = '****'
         self.agent = None
         self.balance = None
         self.F = dict.fromkeys(defult_pairs)
