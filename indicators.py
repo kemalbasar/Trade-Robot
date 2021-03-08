@@ -3,8 +3,8 @@ from trade import Trade
 import trade
 from robot import RobotA
 
-APIKEY = 'QMP9IOD3oZ_nscanB1C9p7Shcj4hGdGHT44DfN-2'
-SECRETKEY = '-gGJhztTh9NedfuY8noTeYXnjEnMBo1HxICR4Ixk'
+APIKEY = '*****'
+SECRETKEY = '*****'
 
 
 
@@ -32,6 +32,7 @@ class CheckSignal():
 
       self.trade_agent = Trade()
 
+  #ema is calculated in this method which takes input as price data , time period and previus ema datas , 
   def ema(self,data,ema_list,period):
       if len(ema_list) == 0 :
           ema_list.append(data[0])
@@ -51,9 +52,9 @@ class CheckSignal():
 
       return a
 
-         #print(self.emadict[self.lengthofframe - 20],'\n')
-
+  #Method which set ema values with using ema function.
   def ema_setter(self):
+    
       for symbol in trade.defult_pairs:
         if len(self.D[symbol]['ema5']) == 0:
          a = self.marketcop.price_frame.loc[symbol, 'close']
@@ -66,10 +67,9 @@ class CheckSignal():
          self.D[symbol]['ema5'].append(self.ema(data=a, ema_list=[self.D[symbol]['ema5'][-1]], period=5))
          self.D[symbol]['ema10'].append(self.ema(data=a, ema_list=[self.D[symbol]['ema10'][-1]], period=10))
          self.D[symbol]['ema20'].append(self.ema(data=a, ema_list=[self.D[symbol]['ema20'][-1]], period=20))
-
+  
+  #Method whic calculates rsi data.
   def rsi(self):
-
-
 
     for symbol in trade.defult_pairs:
         rsi_list_of_gain = []
@@ -107,37 +107,37 @@ class CheckSignal():
 
     return
 
+  #Method which uses ema and rsi data for creating trade signal.
   def trend(self,symbol):
 
+        five=self.D[symbol]['ema5']
+        ten=self.D[symbol]['ema10']
+        tweny=self.D[symbol]['ema20']
+        
+        if (five > ten) & (ten > tweny):
 
-          five=self.D[symbol]['ema5']
-          ten=self.D[symbol]['ema10']
-          tweny=self.D[symbol]['ema20']
-          if (five > ten) & (ten > tweny):
+          print('OK: Trend going UP ,CheckingRSI\n')
+          print('\n')
+
+           if self.D[symbol]['rsi'][-1] < 70:
+            self.trade_agent.execution(symbol,'buy')
+            print('RSI is not overbougt.Creating trade.. \n')
+            print('\n')
+
+        elif (five < ten) & (ten < tweny):
 
 
-             print('OK: Trend going UP ,CheckingRSI\n')
-             print('\n')
+          print('OK: Trend going DOWN,CheckingRSI\n')
+          print('\n')
+          
+           if self.D[symbol]['rsi'][-1] > 30:
+            print('RSI is not oversold.Creating trade.. \n')
+            self.trade_agent.execution(symbol,'sell')
+            print('\n')
 
-             if self.D[symbol]['rsi'][-1] < 70:
-                 self.trade_agent.execution(symbol,'buy')
-                 print('RSI is not overbougt.Creating trade.. \n')
-                 print('\n')
-
-          elif (five < ten) & (ten < tweny):
-
-
-             print('OK: Trend going DOWN,CheckingRSI\n')
-
-             if self.D[symbol]['rsi'][-1] > 30:
-
-                 print('RSI is not oversold.Creating trade.. \n')
-                 self.trade_agent.execution(symbol,'sell')
-                 print('\n')
-
-          else:
-              print('Trend not clear, waiting...\n')
-              print('\n')
+        else:
+            print('Trend not clear, waiting...\n')
+            print('\n')
 
 
 
