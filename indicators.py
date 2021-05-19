@@ -105,7 +105,6 @@ class CheckSignal():
         RSI = 100 - 100 / (1 + RS)
         self.D[symbol]['rsi'].append(RSI)
 
-    return
 
   #Method which uses ema and rsi data for creating trade signal.
   def trend(self,symbol):
